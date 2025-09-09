@@ -7,7 +7,7 @@
 
 <body>
     <h1>PHP Calculator</h1>
-    <form method="post" action="./calculator/calculate.php">
+    <form method="post" action="calculate.php">
         <label for="number1">Number 1:</label>
         <input type="number" name="number1" id="number1" required>
         <br><br>
