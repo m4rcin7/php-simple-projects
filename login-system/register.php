@@ -163,7 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         <div>
             <h2>Register</h2>
             <p>Please fill this form to create an account.</p>
-            <form>
+            <form action="" method="post">
                 <div>
                     <label>Full Name</label>
                     <input type="text" name="name" required>
