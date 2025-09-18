@@ -1,8 +1,6 @@
 <?php
-
 require_once "config.php";
 require_once "session.php";
-
 
 $error = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
@@ -19,10 +17,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     }
 
     if (empty($error)) {
-        if($query = $db->prepare("SELECT * FROM users WHERE email = ?")) {
+        if ($query = $db->prepare("SELECT * FROM users WHERE email = ?")) {
             $query->bind_param('s', $email);
             $query->execute();
-            $row = $query->fetch();
+            $result = $query->get_result();
+            $row = $result->fetch_assoc();
+
             if ($row) {
                 if (password_verify($password, $row['password'])) {
                     $_SESSION["userid"] = $row['id'];
@@ -34,12 +34,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                     $error .= '<p class="error">The password is not valid.</p>';
                 }
             } else {
-                $error .= '<p class="error">No User exist with that email address.</p>';
+                $error .= '<p class="error">No user exists with that email address.</p>';
             }
         }
         $query->close();
     }
-    // Close connection
     mysqli_close($db);
 }
 ?>
@@ -50,16 +49,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
     <style>
+        body {
+            background: #121212;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
         .login-container {
             max-width: 400px;
-            margin: 40px auto;
+            margin: 60px auto;
             padding: 2rem;
             background: #1e1e1e;
             border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
             color: #fff;
-            font-family: Arial, sans-serif;
         }
 
         .login-container h2 {
@@ -72,6 +78,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             margin-bottom: 20px;
             text-align: center;
             color: #bbb;
+        }
+
+        .error {
+            background: rgba(255, 77, 77, 0.1);
+            color: #ff4d4d;
+            border: 1px solid #ff4d4d;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            text-align: center;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .form-group {
@@ -135,6 +165,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     <div class="login-container">
         <h2>Login</h2>
         <p>Please fill in your email and password.</p>
+
+        <?php if (!empty($error)) {
+            echo $error;
+        } ?>
+
         <form action="" method="post">
             <div class="form-group">
                 <label>Email Address</label>
