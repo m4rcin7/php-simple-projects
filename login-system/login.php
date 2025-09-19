@@ -51,21 +51,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style>
-        body {
-            background: #121212;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-
         .login-container {
             max-width: 400px;
             margin: 60px auto;
             padding: 2rem;
-            background: #1e1e1e;
+            background: #fff;
             border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-            color: #fff;
         }
 
         .login-container h2 {
@@ -120,7 +112,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             padding: 10px;
             border-radius: 8px;
             border: 1px solid #444;
-            background: #2c2c2c;
             color: #fff;
             font-size: 1rem;
             transition: border 0.3s;
